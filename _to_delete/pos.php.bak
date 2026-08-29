@@ -1,0 +1,63 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Store identity
+    |--------------------------------------------------------------------------
+    |
+    | Printed at the top of every receipt. Replace the placeholders below with
+    | the details registered with the BIR.
+    |
+    */
+
+    'store' => [
+        'name' => env('POS_STORE_NAME', 'JG Drugmart'),
+        'address' => env('POS_STORE_ADDRESS', '123 Rizal Street, Poblacion'),
+        'city' => env('POS_STORE_CITY', 'Your City, Philippines'),
+        'contact' => env('POS_STORE_CONTACT', '(0900) 000-0000'),
+        'tin' => env('POS_STORE_TIN', '000-000-000-000'),
+        'business_style' => env('POS_STORE_BUSINESS_STYLE', 'Retail Pharmacy'),
+        'permit_number' => env('POS_STORE_PERMIT', ''),
+        'footer' => env('POS_STORE_FOOTER', 'This serves as your Official Receipt.'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Currency
+    |--------------------------------------------------------------------------
+    */
+
+    'currency' => [
+        'symbol' => env('POS_CURRENCY_SYMBOL', '₱'),
+        'code' => env('POS_CURRENCY_CODE', 'PHP'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | VAT
+    |--------------------------------------------------------------------------
+    |
+    | 'inclusive' means shelf prices already contain the tax, which is the
+    | normal arrangement for Philippine retail.
+    |
+    */
+
+    'vat' => [
+        'rate' => (float) env('POS_VAT_RATE', 12),
+        'inclusive' => (bool) env('POS_VAT_INCLUSIVE', true),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Label sheet
+    |--------------------------------------------------------------------------
+    */
+
+    'labels' => [
+        'default_copies' => 12,
+        'max_copies' => 96,
+    ],
+
+];
