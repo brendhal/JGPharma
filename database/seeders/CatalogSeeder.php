@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Medicine;
 use App\Models\Product;
+use App\Models\ProductPack;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -73,7 +74,7 @@ class CatalogSeeder extends Seeder
             // the pack size as a number it can divide a price by.
             $pieceUnit = null;
             $piecesPerBox = 1;
-            $piecesPerPack = null;
+            $blister = null;
 
             if (preg_match('/^\s*(.+?)\s*\(\s*(\d+)\s*([^)]+?)\s*\)\s*$/', $unit, $parts)) {
                 [, $unit, $count, $pieceUnit] = $parts;
@@ -81,7 +82,7 @@ class CatalogSeeder extends Seeder
 
                 // Boxes of twenty and up normally arrive as blisters of ten.
                 if ($piecesPerBox > 10 && $piecesPerBox % 10 === 0) {
-                    $piecesPerPack = 10;
+                    $blister = 10;
                 }
             }
 
@@ -95,7 +96,6 @@ class CatalogSeeder extends Seeder
                     'unit' => $unit,
                     'piece_unit' => $pieceUnit,
                     'pieces_per_box' => $piecesPerBox,
-                    'pieces_per_pack' => $piecesPerPack,
                     'cost_price' => $cost,
                     'selling_price' => $price,
                     // Reorder levels are counted in pieces like everything else.
@@ -104,6 +104,15 @@ class CatalogSeeder extends Seeder
                     'is_active' => true,
                 ]
             );
+
+            // A blister is a tier between the box and the loose tablet, so it
+            // is a row of its own — products may carry several.
+            if ($blister !== null) {
+                ProductPack::firstOrCreate(
+                    ['product_id' => $product->id, 'pieces' => $blister],
+                    ['label' => 'Blister']
+                );
+            }
 
             if ($generic) {
                 Medicine::firstOrCreate(
